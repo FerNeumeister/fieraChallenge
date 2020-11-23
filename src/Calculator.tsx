@@ -8,25 +8,25 @@ const Calculator = () => {
   const [firstNumber, setFirstNumber] = useState(0);
   const [secondNumber, setSecondNumber] = useState(0);
   const [operation, setOperation] = useState<(n1, n2) => {} | undefined>();
-  const [operationSave, setOperationSave] = useState(false);
 
   const clean = () => {
     setFirstNumber(0);
     setSecondNumber(0);
-    setOperationSave(false);
     setOperation(undefined);
   }
 
   const handleOperation = (operation) => {
+    if (secondNumber !== 0) {
+      equal();
+    }
     if (firstNumber !== 0) {
-      setOperationSave(true);
       setOperation(() => operation)
     }
   }
 
   const handleCount = (value) => {
-    let setNumber = operationSave ? setSecondNumber : setFirstNumber;
-    setNumber(parseInt(`${operationSave ? secondNumber : firstNumber}${value}`))
+    let setNumber = operation !== undefined ? setSecondNumber : setFirstNumber;
+    setNumber(parseInt(`${operation !== undefined ? secondNumber : firstNumber}${value}`))
   }
 
   const equal = () => {
@@ -45,14 +45,13 @@ const Calculator = () => {
         ],
         {cancelable: true}
       );
-      console.log(e);
     }
     return;
   }
 
   return (
     <View>
-      <Display displayNumber={operationSave && secondNumber !== 0 ? secondNumber : firstNumber}/>
+      <Display displayNumber={operation !== undefined && secondNumber !== 0 ? secondNumber : firstNumber}/>
       <View style={styles.rowStyle}>
         <PadButton displayValue={'C'} largeButton={true} isOperation={false} handleClick={() => clean()}/>
         <PadButton displayValue={'%'} largeButton={false} isOperation={true}
