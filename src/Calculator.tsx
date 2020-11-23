@@ -58,32 +58,38 @@ const Calculator = () => {
                    handleClick={() => handleOperation(divide)}/>
       </View>
       <View style={styles.rowStyle}>
-        <PadButton displayValue={'7'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(7)}/>
-        <PadButton displayValue={'8'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(8)}/>
-        <PadButton displayValue={'9'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(9)}/>
+        {
+          ['7', '8', '9'].map((element, key) => {
+            return (
+              <PadButton key={key} displayValue={element} largeButton={false} isOperation={false}
+                         handleClick={() => handleCount(element)}/>
+            )
+          })
+        }
         <PadButton displayValue={'X'} largeButton={false} isOperation={true}
                    handleClick={() => handleOperation(multiplication)}/>
       </View>
       <View style={styles.rowStyle}>
-        <PadButton displayValue={'4'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(4)}/>
-        <PadButton displayValue={'5'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(5)}/>
-        <PadButton displayValue={'6'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(6)}/>
+        {
+          ['4', '5', '6'].map((element, key) => {
+            return (
+              <PadButton key={key} displayValue={element} largeButton={false} isOperation={false}
+                         handleClick={() => handleCount(element)}/>
+            )
+          })
+        }
         <PadButton displayValue={'-'} largeButton={false} isOperation={true}
                    handleClick={() => handleOperation(rest)}/>
       </View>
       <View style={styles.rowStyle}>
-        <PadButton displayValue={'1'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(1)}/>
-        <PadButton displayValue={'2'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(2)}/>
-        <PadButton displayValue={'3'} largeButton={false} isOperation={false}
-                   handleClick={() => handleCount(3)}/>
+        {
+          ['1', '2', '3'].map((element, key) => {
+            return (
+              <PadButton key={key} displayValue={element} largeButton={false} isOperation={false}
+                         handleClick={() => handleCount(element)}/>
+            )
+          })
+        }
         <PadButton displayValue={'+'} largeButton={false} isOperation={true}
                    handleClick={() => handleOperation(sum)}/>
       </View>
