@@ -1,16 +1,12 @@
 import {Button, Text, View} from "react-native";
 import React, {useState} from "react";
 
-interface IOperation {
-  op: (n1: number, n2: number) => {} | undefined;
-}
-
 const Calculator = () => {
-  const [count, setCount] = useState('');
   const [firstNumber, setFirstNumber] = useState(10);
   const [secondNumber, setSecondNumber] = useState(5);
   const [operation, setOperation] = useState((n1: number, n2: number) => {
   });
+  const [operationSave, setOperationSave] = useState(false);
 
   const sum = (n1: number, n2: number) => {
     return n1 + n2;
@@ -26,34 +22,42 @@ const Calculator = () => {
   }
 
   const handleOperation = async (operation) => {
-    await setFirstNumber(parseInt(count));
+    setOperationSave(true);
     setOperation(() => operation)
   }
 
   const handleCount = async (value) => {
-    setCount(`${count}${value}`);
+    console.log('op saved', operationSave);
+    let count22 = operationSave ? setSecondNumber : setFirstNumber;
+    count22(parseInt(`${operationSave ? secondNumber : firstNumber}${value}`))
   }
 
   const equal = async () => {
-    await setSecondNumber(parseInt(count));
     let result = operation(firstNumber, secondNumber);
     console.log('---', firstNumber)
     console.log('---', secondNumber)
     console.log('result', result)
-    setCount(result.toString())
+    setFirstNumber(result);
+    setSecondNumber(0);
+    setOperationSave(false);
+    setOperation(() => {});
     return;
   }
+
+  let count22 = operationSave ? secondNumber : firstNumber;
 
   return (
     <View>
       <View>
         <View style={{backgroundColor: 'black'}}>
-          <Text style={{color: 'white', textAlign: 'right'}}>{count}</Text>
+          <Text style={{color: 'white', textAlign: 'right'}}>{count22}</Text>
         </View>
         <View>
           <View>
             <Button title={'C'} onPress={() => {
-              setCount('')
+              setFirstNumber(0);
+              setSecondNumber(0);
+              setOperationSave(false);
             }}/>
           </View>
 
