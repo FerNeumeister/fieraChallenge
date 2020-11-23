@@ -20,8 +20,10 @@ const Calculator = () => {
   }
 
   const handleOperation = (operation) => {
-    setOperationSave(true);
-    setOperation(() => operation)
+    if (firstNumber !== 0) {
+      setOperationSave(true);
+      setOperation(() => operation)
+    }
   }
 
   const handleCount = (value) => {
@@ -30,15 +32,17 @@ const Calculator = () => {
   }
 
   const equal = () => {
-    let result = operation(firstNumber, secondNumber);
-    clean();
-    setFirstNumber(result);
+    if (operation) {
+      let result = operation(firstNumber, secondNumber);
+      clean();
+      setFirstNumber(result);
+    }
     return;
   }
 
   return (
     <View>
-      <Display displayNumber={operationSave ? secondNumber : firstNumber}/>
+      <Display displayNumber={operationSave && secondNumber !== 0 ? secondNumber : firstNumber }/>
       <View style={styles.rowStyle}>
         <PadButton displayValue={'C'} largeButton={true} isOperation={false} handleClick={() => clean()}/>
         <PadButton displayValue={'%'} largeButton={false} isOperation={true}
