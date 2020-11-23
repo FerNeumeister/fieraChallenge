@@ -14,6 +14,6 @@ Calculadora Simple, creada con React Native y Expo.
  $ expo start
  ```
 
-- Opcion 1: Utilizar la app de expo para levantar el proyecto desde un dispositivo fisico.
+- Opción 1: Utilizar la app de expo para levantar el proyecto desde un dispositivo físico.
 
-- Opcion 2: Expo intentara abrir un emulador, en caso de que exista alguno configurado, presionando la tecla "a" en la terminal.
+- Opción 2: Expo intentara abrir un emulador, en caso de que exista alguno configurado, presionando la tecla "a" en la terminal.
