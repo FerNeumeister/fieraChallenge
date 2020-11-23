@@ -1,125 +1,93 @@
-import {Button, Text, View} from "react-native";
+import {View} from "react-native";
 import React, {useState} from "react";
+import {sum, rest, divide, multiplication} from "./helpers/Operations";
+import PadButton from "./components/PadButton";
+import Display from "./components/Display";
 
 const Calculator = () => {
-  const [firstNumber, setFirstNumber] = useState(10);
-  const [secondNumber, setSecondNumber] = useState(5);
+  const [firstNumber, setFirstNumber] = useState(0);
+  const [secondNumber, setSecondNumber] = useState(0);
   const [operation, setOperation] = useState((n1: number, n2: number) => {
   });
   const [operationSave, setOperationSave] = useState(false);
 
-  const sum = (n1: number, n2: number) => {
-    return n1 + n2;
-  }
-  const rest = (n1: number, n2: number) => {
-    return n1 - n2;
-  }
-  const divide = (n1: number, n2: number) => {
-    return n1 / n2;
-  }
-  const multiplication = (n1: number, n2: number) => {
-    return n1 * n2;
+  const clean = () => {
+    setFirstNumber(0);
+    setSecondNumber(0);
+    setOperationSave(false);
+    setOperation(() => {
+    });
   }
 
-  const handleOperation = async (operation) => {
+  const handleOperation = (operation) => {
     setOperationSave(true);
     setOperation(() => operation)
   }
 
-  const handleCount = async (value) => {
-    console.log('op saved', operationSave);
-    let count22 = operationSave ? setSecondNumber : setFirstNumber;
-    count22(parseInt(`${operationSave ? secondNumber : firstNumber}${value}`))
+  const handleCount = (value) => {
+    let setNumber = operationSave ? setSecondNumber : setFirstNumber;
+    setNumber(parseInt(`${operationSave ? secondNumber : firstNumber}${value}`))
   }
 
-  const equal = async () => {
+  const equal = () => {
     let result = operation(firstNumber, secondNumber);
-    console.log('---', firstNumber)
-    console.log('---', secondNumber)
-    console.log('result', result)
+    clean();
     setFirstNumber(result);
-    setSecondNumber(0);
-    setOperationSave(false);
-    setOperation(() => {});
     return;
   }
 
-  let count22 = operationSave ? secondNumber : firstNumber;
-
   return (
     <View>
-      <View>
-        <View style={{backgroundColor: 'black'}}>
-          <Text style={{color: 'white', textAlign: 'right'}}>{count22}</Text>
-        </View>
-        <View>
-          <View>
-            <Button title={'C'} onPress={() => {
-              setFirstNumber(0);
-              setSecondNumber(0);
-              setOperationSave(false);
-            }}/>
-          </View>
-
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-            <Button title={'7'} onPress={() => {
-              handleCount('7')
-            }}/>
-            <Button title={'8'} onPress={() => {
-              handleCount('8')
-            }}/>
-            <Button title={'9'} onPress={() => {
-              handleCount('9')
-            }}/>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-            <Button title={'4'} onPress={() => {
-              handleCount('4')
-            }}/>
-            <Button title={'5'} onPress={() => {
-              handleCount('5')
-            }}/>
-            <Button title={'6'} onPress={() => {
-              handleCount('6')
-            }}/>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-            <Button title={'1'} onPress={() => {
-              handleCount('1')
-            }}/>
-            <Button title={'2'} onPress={() => {
-              handleCount('2')
-            }}/>
-            <Button title={'3'} onPress={() => {
-              handleCount('3')
-            }}/>
-          </View>
-          <View>
-            <Button title={'0'} onPress={() => {
-              handleCount('0')
-            }}/>
-          </View>
-        </View>
+      <Display displayNumber={operationSave ? secondNumber : firstNumber}/>
+      <View style={styles.rowStyle}>
+        <PadButton displayValue={'C'} largeButton={true} isOperation={false} handleClick={() => clean()}/>
+        <PadButton displayValue={'%'} largeButton={false} isOperation={true}
+                   handleClick={() => handleOperation(divide)}/>
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-        <Button title={'%'} onPress={() => {
-          handleOperation(divide);
-        }}/>
-        <Button title={'x'} onPress={() => {
-          handleOperation(multiplication);
-        }}/>
-        <Button title={'-'} onPress={() => {
-          handleOperation(rest);
-        }}/>
-        <Button title={'+'} onPress={() => {
-          handleOperation(sum);
-        }}/>
-        <Button title={'='} onPress={() => {
-          equal();
-        }}/>
+      <View style={styles.rowStyle}>
+        <PadButton displayValue={'7'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(7)}/>
+        <PadButton displayValue={'8'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(8)}/>
+        <PadButton displayValue={'9'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(9)}/>
+        <PadButton displayValue={'X'} largeButton={false} isOperation={true}
+                   handleClick={() => handleOperation(multiplication)}/>
+      </View>
+      <View style={styles.rowStyle}>
+        <PadButton displayValue={'4'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(4)}/>
+        <PadButton displayValue={'5'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(5)}/>
+        <PadButton displayValue={'6'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(6)}/>
+        <PadButton displayValue={'-'} largeButton={false} isOperation={true}
+                   handleClick={() => handleOperation(rest)}/>
+      </View>
+      <View style={styles.rowStyle}>
+        <PadButton displayValue={'1'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(1)}/>
+        <PadButton displayValue={'2'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(2)}/>
+        <PadButton displayValue={'3'} largeButton={false} isOperation={false}
+                   handleClick={() => handleCount(3)}/>
+        <PadButton displayValue={'+'} largeButton={false} isOperation={true}
+                   handleClick={() => handleOperation(sum)}/>
+      </View>
+      <View style={styles.rowStyle}>
+        <PadButton displayValue={'0'} largeButton={true} isOperation={false} handleClick={() => handleCount(0)}/>
+        <PadButton displayValue={'='} largeButton={false} isOperation={true}
+                   handleClick={() => equal()}/>
       </View>
     </View>
   );
+}
+
+const styles = {
+  rowStyle: {
+    flexDirection: 'row',
+    height: '16.6%'
+  }
 }
 
 export default Calculator;
