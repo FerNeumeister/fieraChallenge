@@ -1,4 +1,4 @@
-import {View} from "react-native";
+import {View, Alert} from "react-native";
 import React, {useState} from "react";
 import {sum, rest, divide, multiplication} from "./helpers/Operations";
 import PadButton from "./components/PadButton";
@@ -7,16 +7,14 @@ import Display from "./components/Display";
 const Calculator = () => {
   const [firstNumber, setFirstNumber] = useState(0);
   const [secondNumber, setSecondNumber] = useState(0);
-  const [operation, setOperation] = useState((n1: number, n2: number) => {
-  });
+  const [operation, setOperation] = useState<(n1, n2) => {} | undefined>();
   const [operationSave, setOperationSave] = useState(false);
 
   const clean = () => {
     setFirstNumber(0);
     setSecondNumber(0);
     setOperationSave(false);
-    setOperation(() => {
-    });
+    setOperation(undefined);
   }
 
   const handleOperation = (operation) => {
@@ -32,17 +30,29 @@ const Calculator = () => {
   }
 
   const equal = () => {
-    if (operation) {
-      let result = operation(firstNumber, secondNumber);
-      clean();
-      setFirstNumber(result);
+    try {
+      if (operation) {
+        let result = operation(firstNumber, secondNumber);
+        clean();
+        setFirstNumber(result);
+      }
+    } catch (e) {
+      Alert.alert(
+        "Error",
+        e,
+        [
+          {text: "OK"}
+        ],
+        {cancelable: true}
+      );
+      console.log(e);
     }
     return;
   }
 
   return (
     <View>
-      <Display displayNumber={operationSave && secondNumber !== 0 ? secondNumber : firstNumber }/>
+      <Display displayNumber={operationSave && secondNumber !== 0 ? secondNumber : firstNumber}/>
       <View style={styles.rowStyle}>
         <PadButton displayValue={'C'} largeButton={true} isOperation={false} handleClick={() => clean()}/>
         <PadButton displayValue={'%'} largeButton={false} isOperation={true}
